@@ -53,6 +53,8 @@ class BinaryTree {
   maxSum() {
     if (!this.root) return 0;
 
+    let result = 0;
+
     function maxSumHelper(node) {
       if (node === null) return 0;
 
@@ -70,7 +72,28 @@ class BinaryTree {
   /** nextLarger(lowerBound): return the smallest value in the tree
    * which is larger than lowerBound. Return null if no such value exists. */
 
-  nextLarger(lowerBound) {}
+  nextLarger(lowerBound) {
+    if (!this.root) return null;
+
+    let treeQueue = [this.root];
+    let closest = null;
+
+    while (treeQueue.length) {
+      let current = treeQueue.shift();
+      let currentVal = current.val;
+      let higherThanLowerBound = currentVal > lowerBound;
+      let setClosestBoolean = currentVal < closest || closest === null;
+
+      if (higherThanLowerBound && setClosestBoolean) {
+        closest = currentVal;
+      }
+
+      if (current.left) treeQueue.push(current.left);
+      if (current.right) treeQueue.push(current.right);
+    }
+
+    return closest;
+  }
 
   /** Further study!
    * areCousins(node1, node2): determine whether two nodes are cousins
